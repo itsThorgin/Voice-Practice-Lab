@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+  <title>Security | Voice Practice Lab</title>
+  <link rel="stylesheet" href="./css/tokens.css">
+  <link rel="stylesheet" href="./css/base.css">
+  <link rel="stylesheet" href="./css/layout.css">
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <header class="site-header">
+    <a class="wordmark" href="./" aria-label="Voice Practice Lab home"><span class="wordmark__mark" aria-hidden="true">VPL</span><span>Voice Practice Lab</span></a>
+  </header>
+  <main class="policy-page" id="main-content" aria-labelledby="policy-title">
+<h1 id="policy-title">Security</h1>
+<p>Voice Practice Lab runs in your browser. It has no app server, account system or online database for your practice data. Voice processing and recording playback happen on your device.</p>
+<h2>How the app limits access</h2>
+<ul>
+<li>Microphone capture starts only after you select Start microphone and the browser allows access. Stop microphone ends capture. If permission arrives after you have selected Stop, the app stops that unused microphone stream.</li>
+<li>Reference tones and recording playback start from the app's controls. Live microphone input is never connected to the speakers.</li>
+<li>Scripts and styles load from this website. Fonts come from your device. The app does not load third-party app code, advertising or tracking tools.</li>
+<li>The page gives the browser rules that restrict scripts and other resources and block app data connections and form submissions.</li>
+<li>The app checks settings and numeric inputs before using them. It limits recording duration and size and keeps recordings in temporary page memory.</li>
+<li>Only your selected target, tuning reference and exercise range are saved. The app does not store voice recordings or practice measurements in browser storage.</li>
+</ul>
+<h2>What these protections mean</h2>
+<p>These limits reduce the data the app keeps and the ways it can send data elsewhere. They do not make the app or your device immune to security problems.</p>
+<p>Your browser controls microphone permission. The website host, browser, browser extensions and operating system are outside the app's control. The app cannot protect against a compromised device or website host. It also does not prevent another website from placing this page inside a frame.</p>
+<p>Use the browser's site settings if you want to remove microphone permission. You can clear this app's saved settings and session data from Settings and session.</p>
+  </main>
+  <footer class="site-footer">
+    <p>Built for focused, private practice with not so much ❤️ by Thorgin © 2026</p>
+    <nav aria-label="Site navigation"><a href="./">Back to practice</a><a href="./privacy.html">Privacy</a></nav>
+  </footer>
+</body>
+</html>

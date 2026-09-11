@@ -1,0 +1,825 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; media-src 'self' blob:; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+    >
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta
+      name="description"
+      content="A private, local-first browser workspace for singing and voice practice."
+    >
+    <title>Voice Practice Lab</title>
+    <link rel="stylesheet" href="./css/tokens.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/layout.css">
+    <script type="module" src="./js/app.js"></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+      <a class="wordmark" href="./" aria-label="Voice Practice Lab home">
+        <span class="wordmark__mark" aria-hidden="true">VPL</span>
+        <span>Voice Practice Lab</span>
+      </a>
+    </header>
+
+    <main id="main-content" data-app>
+      <section class="hero" aria-labelledby="hero-title">
+        <p class="eyebrow">A smarter way to practise</p>
+        <h1 id="hero-title">Tune in to your voice.</h1>
+        <p class="hero__intro">
+          A precise, approachable tuner for singing and voice work, with private
+          processing right in your browser.
+        </p>
+
+        <section
+          class="tuner-card"
+          data-tuner
+          data-status="idle"
+          data-tuning="unavailable"
+          data-out-of-range="false"
+          aria-labelledby="tuner-title"
+        >
+          <header class="tuner-card__header">
+            <div>
+              <p class="eyebrow">Free tuner</p>
+              <div class="card-title-row">
+                <h2 id="tuner-title">Current pitch</h2>
+                <button type="button" class="button-secondary tone-shortcut" data-tone-shortcut aria-label="Play reference: hold to listen" aria-describedby="tone-instructions tone-status" disabled>Play reference</button>
+              </div>
+            </div>
+            <p class="tuner-card__state visually-hidden" data-tuner-state>
+              Start the microphone to begin tuning.
+            </p>
+          </header>
+
+
+
+          <div class="tuner-card__reading">
+            <div>
+              <span class="tuner-card__label">Detected note</span>
+              <span class="tuner-card__note" data-tuner-note aria-label="Detected nearest note">-</span>
+            </div>
+            <div class="tuner-card__direction">
+              <p data-tuner-guidance>Start the microphone to begin tuning.</p>
+              <p>
+                <span data-tuner-guidance-term>Waiting</span>
+                <span aria-hidden="true"> · </span>
+                <span data-tuner-precision>No reliable pitch is available yet.</span>
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="tuner-meter"
+            data-tuner-meter
+            role="meter"
+            aria-label="Tuning deviation"
+            aria-valuemin="-50"
+            aria-valuemax="50"
+            aria-valuetext="Start the microphone to begin tuning."
+          >
+            <div class="tuner-meter__track" aria-hidden="true">
+              <span class="tuner-meter__center"></span>
+              <span class="tuner-meter__marker" data-tuner-marker hidden></span>
+            </div>
+            <div class="tuner-meter__labels" aria-hidden="true">
+              <span>Too low <small>flat</small></span>
+              <span>On note <small>in tune</small></span>
+              <span>Too high <small>sharp</small></span>
+            </div>
+          </div>
+
+          <dl class="tuner-stats">
+            <div>
+              <dt>Frequency</dt>
+              <dd><span data-tuner-frequency>-</span></dd>
+            </div>
+            <div>
+              <dt>Cents</dt>
+              <dd><span data-tuner-cents>-</span></dd>
+            </div>
+            <div>
+              <dt>Confidence</dt>
+              <dd><span data-tuner-confidence>-</span></dd>
+            </div>
+            <div>
+              <dt>Stability</dt>
+              <dd><span data-tuner-stability>-</span></dd>
+            </div>
+            <div>
+              <dt>Voice state</dt>
+              <dd><span data-tuner-voiced>No pitch detected</span></dd>
+            </div>
+            <div data-tuner-held>
+              <dt>Held duration</dt>
+              <dd><span data-tuner-held-duration>-</span></dd>
+            </div>
+          </dl>
+
+          <div class="tuner-target" data-tuner-target hidden>
+            <span>Current target</span>
+            <strong data-tuner-target-note>-</strong>
+            <span data-tuner-target-frequency>-</span>
+          </div>
+
+          <div class="microphone-card" data-microphone-card data-status="idle" aria-labelledby="microphone-title">
+            <span class="microphone-card__indicator" aria-hidden="true"></span>
+            <div class="microphone-card__content">
+              <p class="eyebrow">Input control</p>
+              <h2 id="microphone-title">Microphone</h2>
+              <p data-microphone-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1">
+                Microphone is off.
+              </p>
+              <div class="microphone-card__actions">
+                <button type="button" data-microphone-start>Start microphone</button>
+                <button type="button" class="button-secondary" data-microphone-stop disabled>
+                  Stop microphone
+                </button>
+              </div>
+            </div>
+          </div>
+          <p data-help-content>The detected note is the nearest note to your voice. When a target is selected, cents and direction compare your pitch with that target. Hold Play reference to listen; release to stop.</p>
+          <div data-help-content class="tuner-measurement-help">
+            <p><strong>Frequency (Hz):</strong> How many times the detected sound wave repeats each second. A higher number means a higher pitch.</p>
+            <p><strong>Cents:</strong> How far your pitch is above or below the target, or the nearest note when no target is selected. 100 cents is one semitone. Negative means low; positive means high.</p>
+            <p><strong>Confidence:</strong> How clearly the detector finds a repeating sound pattern. A higher percentage means a clearer pitch estimate, not a better voice or a guaranteed correct note.</p>
+            <p><strong>Stability:</strong> How much your recent pitch varies, in cents. A smaller number means a steadier pitch. It does not show how close you are to the target.</p>
+            <p><strong>Voice state:</strong> Whether the app detects a reliable pitch. Noise, quiet sound or speech without a clear pitch can show No pitch detected.</p>
+            <p><strong>Held duration (s):</strong> How long your detected pitch stays within 20 cents of the selected target. It resets when your pitch leaves that range, detection becomes unreliable or the target changes. No target means no timer. Reference playback resets this measurement. Guided practice has its own hold goals.</p>
+          </div>
+
+          <p class="visually-hidden" data-tuner-live-status>
+            Start the microphone to begin tuning.
+          </p>
+        </section>
+
+        <section class="target-card" data-target-controls aria-labelledby="target-title">
+          <header class="target-card__header">
+            <div>
+              <p class="eyebrow">Practice reference</p>
+              <h2 id="target-title">Target pitch</h2>
+            </div>
+            <button
+              type="button"
+              class="help-button"
+              data-frequency-help-button
+              aria-controls="frequency-range-help"
+              aria-expanded="false"
+              aria-label="About very low and high notes"
+            >?</button>
+          </header>
+
+          <div class="target-controls">
+            <label>
+              <span>Target source</span>
+              <select data-target-source>
+                <option value="none">No target</option>
+                <option value="note">Note</option>
+                <option value="exact-hz">Exact Hz</option>
+              </select>
+            </label>
+            <label>
+              <span>Note</span>
+              <select data-target-note-select disabled>
+                <option value="C">C</option>
+                <option value="C#">C♯</option>
+                <option value="D">D</option>
+                <option value="D#">D♯</option>
+                <option value="E">E</option>
+                <option value="F">F</option>
+                <option value="F#">F♯</option>
+                <option value="G">G</option>
+                <option value="G#">G♯</option>
+                <option value="A" selected>A</option>
+                <option value="A#">A♯</option>
+                <option value="B">B</option>
+              </select>
+            </label>
+            <label>
+              <span>Octave</span>
+              <select data-target-octave disabled>
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4" selected>4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+              </select>
+            </label>
+            <label>
+              <span>Exact frequency</span>
+              <span class="input-with-unit">
+                <input
+                  type="number"
+                  inputmode="decimal"
+                  data-target-frequency
+                  min="16.35"
+                  max="8372.02"
+                  step="0.01"
+                  value="440"
+                  disabled
+                >
+                <span aria-hidden="true">Hz</span>
+              </span>
+            </label>
+            <label>
+              <span>Tuning reference</span>
+              <select data-a4-reference>
+                <option value="432">A4 = 432 Hz</option>
+                <option value="440" selected>A4 = 440 Hz</option>
+                <option value="441">A4 = 441 Hz</option>
+                <option value="442">A4 = 442 Hz</option>
+                <option value="443">A4 = 443 Hz</option>
+                <option value="custom">Custom A4</option>
+              </select>
+            </label>
+            <label>
+              <span>Custom A4</span>
+              <span class="input-with-unit">
+                <input
+                  type="number"
+                  inputmode="decimal"
+                  data-a4-custom
+                  min="400"
+                  max="480"
+                  step="0.1"
+                  value="440"
+                  disabled
+                >
+                <span aria-hidden="true">Hz</span>
+              </span>
+            </label>
+          </div>
+
+          <p class="target-card__summary" data-target-summary role="status" aria-live="polite">
+            No target selected. Detected pitch is compared with its nearest note.
+          </p>
+          <p class="target-card__error" data-target-error aria-live="polite"></p>
+          <p class="target-card__summary" data-practice-target-summary role="status" aria-live="polite" hidden></p>
+          <div class="tone-controls" data-tone-controls data-state="idle">
+            <button
+              type="button"
+              data-tone-hold
+              class="button-secondary tone-shortcut"
+              aria-label="Play reference: hold to listen"
+              aria-describedby="tone-instructions tone-status"
+              disabled
+            >Play reference</button>
+            <p id="tone-instructions" class="visually-hidden">Press and hold, or hold Space / Enter. Release to stop.</p>
+            <p id="tone-status" data-tone-status role="status" aria-live="polite" aria-atomic="true">
+              Choose a target to play a reference.
+            </p>
+            <div class="tone-headphones-slot">
+              <p data-tone-headphones hidden>
+                Use headphones while the microphone is on.
+              </p>
+            </div>
+          </div>
+          <aside
+            class="frequency-help"
+            id="frequency-range-help"
+            data-frequency-help
+            tabindex="-1"
+            hidden
+          >
+            <h3>About very low and high notes</h3>
+            <p>
+              This app can analyze a wide pitch range, but its accuracy depends on your device.
+              Your microphone captures your voice, while your headphones or speakers reproduce
+              reference tones. Some devices filter out very low frequencies or cannot capture and
+              reproduce very high frequencies accurately.
+            </p>
+            <p>
+              At extreme frequencies, the app may be less precise or show
+              <strong>No reliable pitch detected</strong>. This does not necessarily mean you
+              produced the note incorrectly; it means the app cannot measure it reliably with the
+              current browser and hardware.
+            </p>
+          </aside>
+        </section>
+
+        <section class="match-card" data-match-controls aria-labelledby="match-title">
+          <p class="eyebrow">Guided practice</p>
+          <div class="card-title-row">
+            <h2 id="match-title" data-practice-title>Match a note</h2>
+            <button type="button" class="button-secondary tone-shortcut" data-tone-shortcut aria-label="Play reference: hold to listen" aria-describedby="tone-instructions tone-status" disabled>Play reference</button>
+          </div>
+          <p class="practice-target" data-match-target>Choose your target in Target pitch above.</p>
+          <dl class="match-metrics">
+            <div><dt>Attempt time</dt><dd data-match-elapsed>0.0 / 15 s</dd></div>
+            <div><dt>Current error (signed)</dt><dd data-match-current>-</dd></div>
+            <div><dt data-match-hold-label>Steady match</dt><dd data-match-hold>0.0 / 1.0 s</dd></div>
+          </dl>
+          <progress data-match-progress max="1000" value="0" aria-label="Steady match progress"></progress>
+          <label class="practice-mode">Practice mode
+            <select data-practice-mode>
+              <option value="selected">Match selected target</option>
+              <option value="random">Random notes</option>
+              <option value="sustained">Sustained note</option>
+              <option value="interval">Interval practice</option>
+              <option value="scale">Scale practice</option>
+            </select>
+          </label>
+          <section class="match-explanation" data-help-content>
+            <h3>How to practise</h3>
+            <p data-practice-instructions>Choose a target inside your exercise range. Stay within ±20 cents of the target for 1 steady second. You have 15 seconds to complete the attempt.</p>
+            <p>Hold <strong>Play reference</strong> to listen, then release it. Start the microphone and select <strong>Start attempt</strong>. Sing the target and use the pitch display to adjust your voice.</p>
+            <p>Cents measure pitch distance: 100 cents is one semitone. A negative reading means too low; a positive reading means too high.</p>
+            <p data-random-hint hidden>Select <strong>Next note</strong> to choose a new target. Retry keeps the same note. Your manual target remains separate.</p>
+          </section>
+          <div data-scale-options hidden>
+            <div class="range-fields">
+              <label>Lower tonic<select data-scale-root></select></label>
+              <label>Scale type<select data-scale-type><option value="major">Major</option><option value="natural-minor">Natural minor</option><option value="chromatic">Chromatic</option></select></label>
+              <label>Scale direction<select data-scale-direction><option value="ascending">Ascending (up)</option><option value="descending">Descending (down)</option><option value="up-down">Up then down</option></select></label>
+            </div>
+            <p data-scale-description></p>
+            <p data-scale-error role="status" aria-live="polite"></p>
+            <ol class="scale-sequence" data-scale-sequence aria-label="Scale notes in order"></ol>
+            <div class="match-actions">
+              <button type="button" class="button-secondary" data-scale-back disabled>Back one note</button>
+              <button type="button" class="button-secondary" data-scale-next disabled>Next note (skip)</button>
+            </div>
+          </div>
+          <div data-interval-options hidden>
+            <div class="range-fields">
+              <label>Root note<select data-interval-root></select></label>
+              <label>Interval<select data-interval-distance></select></label>
+              <label>Direction<select data-interval-direction><option value="ascending">Ascending (up)</option><option value="descending">Descending (down)</option></select></label>
+              <label>Reference note<select data-interval-preview><option value="root">Root</option><option value="target">Target</option></select></label>
+            </div>
+            <p data-interval-pair></p>
+            <p data-interval-error role="status" aria-live="polite"></p>
+          </div>
+          <div data-sustain-options hidden>
+            <div class="range-fields">
+              <label>Required hold
+                <select data-sustain-duration>
+                  <option value="2000">2 seconds</option>
+                  <option value="3000">3 seconds</option>
+                  <option value="5000" selected>5 seconds</option>
+                  <option value="10000">10 seconds</option>
+                </select>
+              </label>
+              <label>Allowed error
+                <select data-sustain-tolerance>
+                  <option value="20" selected>±20 cents</option>
+                  <option value="10">±10 cents</option>
+                  <option value="5">±5 cents</option>
+                </select>
+              </label>
+            </div>
+            <p data-sustain-error role="status" aria-live="polite"></p>
+          </div>
+          <div class="match-actions">
+            <button type="button" data-random-next hidden>Next note</button>
+            <button type="button" data-match-start disabled>Start attempt</button>
+            <button type="button" class="button-secondary" data-match-stop disabled>Stop attempt</button>
+            <button type="button" class="button-secondary" data-match-reset disabled>Reset attempt</button>
+          </div>
+          <p data-match-status tabindex="-1">Start the microphone above before starting an attempt.</p>
+          <p data-match-availability></p>
+          <section class="practice-result" data-match-result hidden aria-label="Current note result">
+            <header class="practice-result__header">
+              <div><h3 data-match-result-heading>Your result</h3><p class="practice-result__target" data-match-result-target></p></div>
+              <span class="result-outcome" data-match-outcome>No pitch detected</span>
+            </header>
+            <div class="practice-result__body">
+              <div class="practice-result__total">
+                <span data-match-score-label>Practice score</span>
+                <strong data-match-practice-score>-</strong>
+                <p data-match-score-note></p>
+              </div>
+              <dl class="score-parts">
+                <div><dt>Accuracy <small>Close to the target</small></dt><dd><span data-match-score-accuracy>-</span><meter min="0" max="50" value="0" data-match-meter-accuracy aria-label="Accuracy points out of 50"></meter></dd></div>
+                <div><dt>Stability <small>Consistent pitch</small></dt><dd><span data-match-score-stability>-</span><meter min="0" max="20" value="0" data-match-meter-stability aria-label="Stability points out of 20"></meter></dd></div>
+                <div><dt>Hold <small>Continuous match</small></dt><dd><span data-match-score-hold>-</span><meter min="0" max="20" value="0" data-match-meter-hold aria-label="Hold points out of 20"></meter></dd></div>
+                <div><dt>Completion <small>Note goal reached</small></dt><dd><span data-match-score-completion>-</span><meter min="0" max="10" value="0" data-match-meter-completion aria-label="Completion points out of 10"></meter></dd></div>
+              </dl>
+            </div>
+            <p class="practice-result__hold" data-match-hold-summary></p>
+            <details class="result-measurements" data-match-measurements>
+            <summary>Measurements <span>Pitch errors and timing</span></summary>
+            <dl class="match-metrics">
+              <div><dt>Pitch accuracy score <small>Closeness only</small></dt><dd data-match-score>-</dd></div>
+              <div><dt>Mean absolute error</dt><dd data-match-mean>-</dd></div>
+              <div><dt>Median absolute error</dt><dd data-match-median>-</dd></div>
+              <div><dt>Mean signed error</dt><dd data-match-bias>-</dd></div>
+              <div><dt>Stability spread (MAD)</dt><dd data-match-stability>-</dd></div>
+              <div><dt>Voiced time</dt><dd data-match-voiced>0.0 s</dd></div>
+              <div><dt data-match-best-label>Best steady match</dt><dd data-match-best>0.0 s</dd></div>
+              <div><dt>Accepted frames</dt><dd data-match-samples>0</dd></div>
+            </dl>
+            <div data-sustain-feedback hidden>
+              <dl class="match-metrics">
+                <div><dt>Closeness to target</dt><dd data-sustain-closeness>No reliable pitch</dd></div>
+                <div><dt>Recent stability</dt><dd data-sustain-stability>Waiting for 3 recent reliable frames</dd></div>
+                <div><dt>Measured time inside tolerance</dt><dd data-sustain-time>0.0 s</dd></div>
+                <div><dt>Detector dropouts</dt><dd data-sustain-dropouts>0</dd></div>
+              </dl>
+              <p data-sustain-rules></p>
+            </div>
+            <p class="result-caption">Lower pitch error means closer to the target. Negative signed error means low; positive means high. Open (?) help for definitions and score calculations.</p>
+            </details>
+          </section>
+          <section class="session-result" data-random-summary hidden aria-label="Random session results">
+            <h3>Random session</h3><div class="session-result__overview"><p data-random-average></p><p data-random-count></p></div>
+            <details class="result-measurements"><summary>Session measurements</summary><p data-random-summary-details></p></details>
+          </section>
+          <section class="session-result" data-interval-results hidden aria-label="Interval results">
+            <h3>Both notes</h3><p class="result-caption">Each note has its own score. Expand a note for its breakdown.</p>
+            <div class="interval-result-grid">
+              <details class="note-result" data-interval-root-card><summary><span><small>Root result</small><span data-interval-root-result></span></span></summary><p data-interval-root-details></p></details>
+              <details class="note-result" data-interval-target-card><summary><span><small>Target result</small><span data-interval-target-result></span></span></summary><p data-interval-target-details></p></details>
+            </div>
+          </section>
+          <section class="session-result" data-scale-results hidden aria-label="Whole scale results">
+            <h3>Whole scale</h3><p data-scale-summary></p>
+            <div class="session-result__overview"><p data-scale-average></p><p data-scale-count></p></div>
+            <details class="result-measurements" data-scale-score-details hidden>
+              <summary>Note results <span>Scores and measurements</span></summary>
+              <p class="result-caption">Each note has its own score. Expand a row for its breakdown.</p>
+              <ol class="note-result-list" data-scale-score-list></ol>
+              <p data-scale-average-details></p>
+            </details>
+          </section>
+          <section class="match-explanation" data-help-content>
+            <h3>Understand your score</h3>
+            <p>Your practice score is out of <strong>100 points</strong>:</p>
+            <ul class="practice-help-list">
+              <li><strong>Accuracy · 50 points:</strong> singing close to the target.</li>
+              <li><strong>Stability · 20 points:</strong> keeping your pitch consistent.</li>
+              <li><strong>Hold · 20 points:</strong> maintaining a continuous match.</li>
+              <li><strong>Completion · 10 points:</strong> completing the note.</li>
+            </ul>
+            <p data-practice-hold-example>A 0.5-second hold earns 10 hold points. A 1-second hold earns all 20. Separate holds do not add together.</p>
+            <p>The score includes readings from the whole attempt. Completing the note does not guarantee 100 points.</p>
+            <h3>Keep in mind</h3>
+            <ul class="practice-help-list">
+              <li>Release the reference before singing. Playing it breaks your hold while the attempt timer continues.</li>
+              <li>Too few reliable pitch readings means <strong>no score</strong>, rather than zero.</li>
+              <li><strong>Retry</strong> starts a fresh attempt. Results disappear when you reload or leave the page.</li>
+            </ul>
+          </section>
+          <details class="match-explanation" data-practice-score-details data-help-content>
+            <summary>Score details</summary>
+            <p>Compare attempts with similar goals, settings and equipment. This score measures pitch practice, not voice quality or musical expression.</p>
+            <h3>How the points are calculated</h3>
+            <p><strong>Accuracy:</strong> find the average distance from the target, in cents. Errors above and below count equally. Subtract this average from 100, then divide by 2, for up to 50 points. An average error of 20 cents earns 40 points. The separate Pitch accuracy score shows closeness out of 100 before this division.</p>
+            <p><strong>Stability:</strong> find the middle pitch reading, then the middle distance of the readings from it. This is the stability spread (MAD). Start with 20 points and subtract 0.4 points per cent of spread. A spread of 5 cents earns 18 points. A steady note can still be off target. Vibrato can reduce stability points.</p>
+            <p><strong>Hold:</strong> divide the best qualifying hold by the required duration, then multiply by 20. The maximum is 20 points. Use the goal for the selected mode; a 1-second match and a 5-second sustained hold have different requirements.</p>
+            <p><strong>Completion:</strong> earn 10 points when the app confirms that this note's goal is complete. An unfinished or skipped note earns no completion points but keeps its other measured points.</p>
+            <p>No component can be below zero. Expressed as percentages, the formula is 50% accuracy + 20% stability + 20% best hold + 10% completion. The app adds unrounded values, then rounds the total to a whole number. Point contributions are displayed to one decimal place.</p>
+            <h3>Read the measurements</h3>
+            <ul class="practice-help-list">
+              <li><strong>Mean absolute error:</strong> average distance from the target. Lower is better.</li>
+              <li><strong>Median absolute error:</strong> the middle distance when errors are sorted.</li>
+              <li><strong>Mean signed error:</strong> average direction of error. Negative means low; positive means high. Opposite errors can cancel here.</li>
+              <li><strong>Stability spread (MAD):</strong> typical pitch variation across the attempt. Lower means steadier.</li>
+              <li><strong>Voiced time:</strong> time between reliable readings no more than 120 milliseconds apart.</li>
+              <li><strong>Best hold:</strong> the longest qualifying continuous match.</li>
+              <li><strong>Accepted frames:</strong> the number of reliable pitch readings used.</li>
+            </ul>
+            <h3>Missing readings and session averages</h3>
+            <p>An overall score needs at least 3 accepted readings and a stability measurement. Silence, uncertain readings and reference playback add no measurements. Brief gaps of up to 120 milliseconds may bridge a hold under the exercise rules. Longer gaps break it. A new qualifying reading is required to complete a hold.</p>
+            <p>Random-note and scale averages give each retained result with enough data equal weight. Partial or skipped results count if they have enough data. Results without enough data are excluded and counted; scale notes you have not attempted are not averaged. Interval root and target stages have separate scores.</p>
+          <section class="match-explanation" data-match-explanation>
+            <h3>How this attempt is measured</h3>
+            <p>A steady match needs at least 3 reliable readings, a recent stability spread of no more than 10 cents, and pitch within ±20 cents for 1 second. The recent spread uses up to 1 second of readings; the stability score uses the whole attempt.</p>
+            <p>Reference playback pauses measurements until 250 milliseconds after release. The attempt timer continues. Use headphones to reduce speaker pickup.</p>
+            <p>Retry replaces the displayed attempt. In Random notes, the last 100 ended attempts stay in this session, including retries and stopped attempts. Reset random session, changing mode, or leaving the page clears them. Reset attempt clears the selected-target attempt.</p>
+          </section>
+          <section class="match-explanation" data-sustain-explanation hidden>
+            <h3>How a sustained hold is measured</h3>
+            <p>Stay inside the allowed error for your chosen duration. A reliable reading outside this range breaks the hold immediately. Completion depends on the hold, not the stability label.</p>
+            <p>Recent stability uses up to 1 second of readings and needs at least 3 readings. A spread of no more than 10 cents is labelled steady. The stability score uses the whole attempt.</p>
+            <p>Progress freezes when reliable pitch is missing. A gap of up to 120 milliseconds can be bridged when matching pitch returns. A longer gap resets the current hold but keeps your best hold. Measured time inside tolerance counts only adjacent matching readings; gaps add no measured time. Each period of missing or unreliable pitch counts as one detector dropout.</p>
+            <p>Reference playback breaks the hold and pauses measurements until 250 milliseconds after release. It does not count as a detector dropout. The 30-second attempt timer continues. Use headphones to reduce speaker pickup.</p>
+            <p>Changing the hold settings, target, tuning or range ends the attempt. Its result keeps the original goal. Retry starts fresh. Reset sustained session clears results and restores the 5-second, ±20-cent defaults. Changing mode or leaving the page clears the session.</p>
+          </section>
+          </details>
+        </section>
+
+        <section class="target-wave-card" data-target-wave-card aria-labelledby="target-wave-title">
+          <header class="target-wave-card__header">
+            <div>
+              <p class="eyebrow">Visual reference</p>
+              <div class="card-title-row">
+                <h2 id="target-wave-title">Target tone shape</h2>
+                <button type="button" class="button-secondary tone-shortcut" data-tone-shortcut aria-label="Play reference: hold to listen" aria-describedby="tone-instructions tone-status" disabled>Play reference</button>
+              </div>
+            </div>
+            <p id="target-wave-description" data-help-content>
+              Two mathematical pitch models, not phase-aligned with your voice. Both start at the same phase and use equal amplitude to compare frequency.
+            </p>
+          </header>
+          <div class="target-wave-card__canvas-frame">
+            <canvas
+              data-target-wave
+              data-target="none"
+              width="720"
+              height="180"
+              role="img"
+              aria-describedby="target-wave-description"
+              aria-label="Target tone shape. No target selected."
+            >Mathematical target tone shape.</canvas>
+            <p class="target-wave-card__empty" data-target-wave-empty>
+              Choose a note or exact frequency to see its target tone shape.
+            </p>
+          </div>
+          <p class="target-wave-card__scale" aria-hidden="true">20 milliseconds</p>
+          <div class="target-wave-card__legend">
+            <p><span class="target-wave-card__key target-wave-card__key--target" aria-hidden="true"></span><strong>Target sine · solid</strong><span data-sine-target>No target selected</span></p>
+            <p><span class="target-wave-card__key target-wave-card__key--detected" aria-hidden="true"></span><strong>Detected pitch model · dashed</strong><span data-sine-reading>No reliable pitch</span></p>
+          </div>
+          <p class="target-wave-card__comparison-status" data-sine-status>Choose a target to compare pitch models.</p>
+          <p class="target-wave-card__rules" data-sine-rules data-help-content>Near: ±5¢ · steady: 1 second. Visual feedback; exercise completion is separate.</p>
+          <p class="target-wave-card__explanation" data-help-content>The dashed curve is a sine calculated from your detected pitch. It does not show your actual voice waveform, timbre or loudness. Similar frequencies may look almost identical over 20 ms; the cents reading shows small differences.</p>
+        </section>
+
+        <section class="pitch-history-card" data-pitch-history-card aria-labelledby="pitch-history-title">
+          <header class="pitch-history-card__header">
+            <div>
+              <p class="eyebrow">Recent movement</p>
+              <h2 id="pitch-history-title">Pitch history</h2>
+            </div>
+
+          </header>
+          <div class="live-pitch-scale" data-live-pitch-scale data-feedback="waiting">
+            <div class="pitch-history-card__views">
+            <div class="pitch-history-card__history">
+              <div class="pitch-history-card__canvas-frame">
+                <canvas
+                  data-pitch-history
+                  data-mode="note-space"
+                  width="720"
+                  height="220"
+                  role="img"
+                  aria-label="Pitch history. No pitch history yet."
+                >Recent pitch history graph.</canvas>
+                <p class="pitch-history-card__empty" data-pitch-history-empty>
+                  No pitch history yet.
+                </p>
+              </div>
+            </div>
+              <div class="live-pitch-scale__ladder" aria-hidden="true">
+                <div data-live-note>-</div>
+                <div data-live-note>-</div>
+                <div data-live-note>-</div>
+                <div data-live-note>-</div>
+                <div data-live-note>-</div>
+                <div data-live-note>-</div>
+                <div data-live-note>-</div>
+                <span class="live-pitch-scale__zone live-pitch-scale__zone--sharp" data-live-sharp-zone></span>
+                <span class="live-pitch-scale__zone live-pitch-scale__zone--flat" data-live-flat-zone></span>
+                <span class="live-pitch-scale__reference-line" data-live-reference-line hidden></span>
+                <span class="live-pitch-scale__target-marker" data-live-target-marker title="Target position" hidden>◁</span>
+                <span class="live-pitch-scale__marker" data-live-marker hidden>●</span>
+              </div>
+            </div>
+            <div class="pitch-history-card__time-axis" aria-hidden="true">
+              <div class="pitch-history-card__timeline">
+                <span>8 seconds ago</span>
+                <span>Now</span>
+              </div>
+              <span class="live-pitch-scale__axis-label">Live</span>
+            </div>
+            <div class="live-pitch-scale__feedback">
+              <p class="live-pitch-scale__reading" data-live-reading>-</p>
+              <p class="live-pitch-scale__status" data-live-status>Listening for a reliable pitch</p>
+              <p class="live-pitch-scale__target" data-live-target>Following nearest note</p>
+              <p class="live-pitch-scale__rules" data-live-rules>Near: ±5¢ · steady: 1 second</p>
+            </div>
+          </div>
+            <div class="pitch-history-card__actions">
+              <button type="button" class="button-secondary tone-shortcut" data-tone-shortcut aria-label="Play reference: hold to listen" aria-describedby="tone-instructions tone-status" disabled>Play reference</button>
+              <span class="visually-hidden" data-pitch-history-mode>Note space</span>
+              <button type="button" class="button-secondary" data-pitch-history-reset>
+                Reset history
+              </button>
+            </div>
+          <p class="live-pitch-scale__help" data-help-content>Right-hand scale: ● your pitch, ◁ target. The thin line marks the nearest note or selected target; red above means sharp, blue below means flat. An off-screen target is indicated below the graph. Steady hold is visual feedback; exercise completion is shown in Guided practice.</p>
+        </section>
+
+        <section class="waveform-card" data-waveform-card data-status="idle" aria-labelledby="waveform-title">
+          <div class="waveform-card__header">
+            <div>
+              <p class="eyebrow">Live input</p>
+              <h2 id="waveform-title">Waveform</h2>
+            </div>
+            <p id="waveform-description" data-help-content>
+              A time-domain view of the microphone signal for visual feedback, not pitch detection.
+            </p>
+          </div>
+          <div class="waveform-card__canvas-frame">
+            <canvas
+              data-waveform
+              width="720"
+              height="180"
+              aria-hidden="true"
+            ></canvas>
+            <p class="waveform-card__placeholder" data-waveform-placeholder>
+              Start the microphone to see the live signal.
+            </p>
+          </div>
+          <div class="signal-level">
+            <span id="signal-level-label">Signal level</span>
+            <meter
+              data-signal-meter
+              aria-labelledby="signal-level-label"
+              min="0"
+              max="1"
+              low="0.15"
+              high="0.8"
+              optimum="0.5"
+              value="0"
+            >0%</meter>
+            <span data-signal-label>Quiet</span>
+          </div>
+        </section>
+
+        <section class="spectrum-card" data-spectrum-card data-status="idle" aria-labelledby="spectrum-title">
+          <header class="spectrum-card__header">
+            <div>
+              <p class="eyebrow">Harmonic view</p>
+              <h2 id="spectrum-title">Frequency spectrum</h2>
+            </div>
+            <p id="spectrum-description" data-help-content>
+              Peaks show sound energy from 50 Hz to 5 kHz on a logarithmic axis.
+              Harmonic peaks are normal; the tallest peak is not necessarily the fundamental pitch.
+            </p>
+          </header>
+          <div class="spectrum-card__canvas-frame">
+            <canvas
+              data-spectrum
+              width="720"
+              height="180"
+              role="img"
+              aria-label="Frequency spectrum. No live spectrum available."
+              aria-describedby="spectrum-description"
+            >Live frequency spectrum from 50 hertz to 5 kilohertz.</canvas>
+            <p class="spectrum-card__placeholder" data-spectrum-placeholder>
+              Start the microphone to see harmonic energy.
+            </p>
+          </div>
+          <div class="spectrum-card__range" aria-hidden="true">
+            <span>Lower frequencies</span>
+            <span>Higher frequencies</span>
+          </div>
+        </section>
+      </section>
+
+      <section class="recording-card" data-recording-controls aria-labelledby="recording-title" aria-describedby="recording-privacy">
+        <p class="eyebrow">Listen back</p>
+        <h2 id="recording-title">Practice recording</h2>
+        <p id="recording-privacy" data-help-content>Recordings stay in this tab for playback and are not uploaded or saved by the app.</p>
+        <p class="recording-legend" data-help-content>A: coral, solid pitch line · B: green, dashed pitch line</p>
+        <p id="recording-analysis" data-record-analysis data-help-content>No takes to compare.</p>
+        <div class="recording-workspace">
+          <div class="recording-comparison" role="group" aria-label="Compare and align takes">
+            <canvas class="recording-graph" data-record-graph role="img" aria-label="Reference A and comparison B waveform envelopes and pitch contours on an aligned timeline" aria-describedby="recording-analysis"></canvas>
+            <label class="recording-timeline">Playback position <span data-record-position aria-hidden="true">0.00 s</span>
+              <input type="range" min="0" max="0.1" step="0.01" value="0" data-record-seek disabled>
+            </label>
+            <div class="recording-alignment">
+              <label>B offset (seconds)
+                <input type="number" min="-5" max="5" step="0.01" value="0" data-record-offset disabled aria-describedby="recording-alignment">
+              </label>
+              <p id="recording-alignment" data-record-alignment>A and B start together.</p>
+            </div>
+            <div class="recording-actions recording-transport" role="group" aria-label="Comparison playback">
+              <button type="button" class="button-secondary" data-record-reference-play disabled>Play A</button>
+              <button type="button" class="button-secondary" data-record-play disabled>Play B</button>
+              <button type="button" data-record-both disabled>Play A + B</button>
+              <button type="button" class="button-secondary" data-record-pause disabled>Pause</button>
+              <button type="button" class="button-secondary" data-record-restart disabled>Return to start</button>
+            </div>
+          </div>
+          <div class="recording-capture" role="group" aria-label="Record and manage takes">
+            <div class="recording-options">
+              <label>Recording limit
+                <select data-record-limit>
+                  <option value="15">15 seconds</option>
+                  <option value="30" selected>30 seconds</option>
+                  <option value="60">60 seconds</option>
+                </select>
+              </label>
+              <p>Take duration <span data-record-time>0.0 s</span></p>
+            </div>
+            <div class="recording-actions">
+              <button type="button" data-record-start disabled>Record</button>
+              <button type="button" class="button-secondary" data-record-stop disabled>Stop recording</button>
+              <button type="button" class="button-secondary" data-record-keep disabled>Keep as reference A</button>
+            </div>
+            <p data-record-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1">Start the microphone to record a short take.</p>
+            <div class="recording-takes">
+              <section aria-label="Reference take A">
+                <h3>Reference A</h3>
+                <p data-record-reference-time>No reference yet</p>
+                <label>A level <input type="range" min="0" max="1" step="0.05" value="0.5" data-record-reference-level></label>
+                <button type="button" class="button-secondary" data-record-reference-delete disabled>Delete A</button>
+              </section>
+              <section aria-label="Comparison take B">
+                <h3>Comparison B</h3>
+                <p>New takes replace B.</p>
+                <label>B level <input type="range" min="0" max="1" step="0.05" value="0.5" data-record-comparison-level></label>
+                <button type="button" class="button-secondary" data-record-delete disabled>Delete B</button>
+              </section>
+            </div>
+          </div>
+        </div>
+        <audio data-record-player preload="metadata"></audio>
+        <audio data-record-reference-player preload="metadata"></audio>
+
+        <p class="recording-help" data-help-content>The envelopes show recorded level, not calibrated loudness. Pitch contours cover 50–2000 Hz; unvoiced speech and uncertain pitch appear as gaps. These views compare timing and pitch, not acting quality or timbre. Offset moves B in both playback and the graph. A/B switches keep the timeline position; Return to start rewinds both. Both takes use one playback clock; adjust the offset to align different recording starts.</p>
+        <p class="recording-help" data-help-content>Keep a take as reference A, then record B as often as needed. Up to two takes, each at most 60 seconds and 16 MiB. Stopping the microphone keeps both takes; resetting the session or leaving this page deletes them. Use headphones when listening with the microphone on.</p>
+      </section>
+
+      <section class="settings-card" data-settings-controls aria-labelledby="settings-title">
+        <p class="eyebrow">On this device</p>
+        <h2 id="settings-title">Settings and session</h2>
+        <p data-help-content>Your tuning reference, exercise range, and target choices are remembered when you change them. Every new session starts with No target; choose a target source to enable one. Audio and pitch history stay in this session.</p>
+        <div class="range-controls" data-range-controls role="group" aria-labelledby="range-title">
+          <h3 id="range-title">Exercise vocal range</h3>
+          <p id="range-help" data-help-content>Choose your comfortable lowest and highest notes. This range is for exercises; it does not limit the free tuner or your target pitch. C4 is middle C.</p>
+          <div class="range-fields">
+            <label>Lowest note
+              <select data-range-low aria-describedby="range-help range-error" disabled><option>C3</option></select>
+            </label>
+            <label>Highest note
+              <select data-range-high aria-describedby="range-help range-error" disabled><option>C5</option></select>
+            </label>
+            <label>Optional starting preset
+              <select data-range-preset aria-describedby="range-preset-help" disabled><option>Exact range (manual or saved)</option></select>
+            </label>
+          </div>
+          <p id="range-preset-help" data-help-content>Selecting a preset replaces both notes. These are approximate starting points, not voice types. Edit either note to customize.</p>
+          <p data-range-summary role="status" aria-live="polite" aria-atomic="true">Exercise range: C3–C5, inclusive.</p>
+          <p id="range-error" data-range-error aria-live="polite"></p>
+        </div>
+        <div class="settings-actions">
+          <div>
+            <button type="button" class="button-secondary" data-session-reset>Reset current session</button>
+          </div>
+          <div>
+            <button type="button" class="button-secondary" data-settings-clear>Clear saved app settings</button>
+          </div>
+          <div>
+            <button type="button" class="button-secondary" data-data-delete aria-controls="delete-confirmation" aria-expanded="false">Delete all app data</button>
+          </div>
+        </div>
+        <div class="delete-confirmation" id="delete-confirmation" data-delete-confirmation role="group" aria-labelledby="delete-confirmation-title" hidden>
+          <h3 id="delete-confirmation-title">Delete all app data?</h3>
+          <p>This stops app audio and microphone capture, deletes both recordings, clears the current pitch feedback and saved settings, and restores the default target, tuning reference, and exercise range (C3–C5).</p>
+          <div class="settings-confirm-actions">
+            <button type="button" data-delete-confirm>Delete app data</button>
+            <button type="button" class="button-secondary" data-delete-cancel>Cancel</button>
+          </div>
+        </div>
+        <p data-help-content data-settings-help-status>Target, tuning, and exercise range settings saved on this device.</p>
+        <p data-settings-status role="status" aria-live="polite" aria-atomic="true" tabindex="-1"></p>
+      </section>
+
+      <p class="visually-hidden" data-accessible-summary role="status" aria-live="polite" aria-atomic="true"></p>
+      <section class="principles" aria-labelledby="principles-title">
+        <div>
+          <p class="eyebrow">Designed with care</p>
+          <h2 id="principles-title">Private by default. Useful by design.</h2>
+        </div>
+        <div class="principle-grid">
+          <article>
+            <p class="principle-grid__number" aria-hidden="true">01</p>
+            <h3>On your device</h3>
+            <p>Voice analysis runs locally in the browser.</p>
+          </article>
+          <article>
+            <p class="principle-grid__number" aria-hidden="true">02</p>
+            <h3>No remote runtime</h3>
+            <p>No analytics, trackers, remote fonts, or third-party app code.</p>
+          </article>
+          <article>
+            <p class="principle-grid__number" aria-hidden="true">03</p>
+            <h3>Saved settings, fresh sessions</h3>
+            <p>Your settings are remembered. Recordings and practice results stay only for this session.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>Built for focused, private practice with not so much ❤️ by Thorgin © 2026</p>
+      <nav aria-label="Project policies">
+        <a href="./privacy.html">Privacy</a>
+        <a href="./security.html">Security</a>
+      </nav>
+    </footer>
+  </body>
+</html>
