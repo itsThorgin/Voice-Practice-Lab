@@ -249,20 +249,14 @@ One noise plays at a time. Switching noises while it plays changes the sound. Ea
 
 Noise is allowed during exercises and recording. It can make other background sounds less noticeable, but it does not remove noise from your recording. Your microphone may pick it up. Use headphones or lower the volume if it affects your readings or takes.
 
-# Voice Training with Background Noise
-It alters how the brain and vocal system function in loud environments. It trains the speaker to overcome the natural reflex to yell, shifting the physical effort from the throat to the respiratory system.
+### Voice Training with Background Noise
 
-## Vocal Mechanism and Control
-Background noise activates the Lombard effect, an automatic reflex where speakers raise their pitch and volume to compete with ambient sound. Training with deliberate background noise teaches individuals to control this reflex. Speakers learn to increase their sound pressure level using subglottic pressure from the lungs rather than squeezing the intrinsic laryngeal muscles. This protects the vocal cords from tissue trauma and prevents muscle tension dysphonia.
-
-## Articulation and Speech Intelligibility
-Ambient sound easily masks high frequency, low energy speech sounds, particularly unvoiced consonants like /p/, /t/, /k/, and /s/. Training sessions in noisy environments force the speaker to increase their articulatory precision. The brain learns to coordinate the tongue, lips, and jaw with greater dynamic range, resulting in hyper articulation. This ensures that consonants remain distinct and words remain intelligible even when the acoustic signal is degraded by competing noise.
-
-## Acoustic Resonance and Projection
-To be heard over noise without straining, the speaker must optimize vocal tract resonance. Training teaches the speaker to alter the shape of the pharynx and epilarynx to amplify specific frequencies. Specifically, it boosts energy in the 2,000 to 4,000 Hz range, often called the speaker's formant or vocal ring. This frequency band matches the human ear's highest sensitivity, allowing the voice to cut through low frequency environmental noise with minimal physical effort.
-
-## Auditory Processing and Cognitive Focus
-Speaking in a loud environment requires significant cognitive load as the brain tries to monitor its own output while filtering external noise. Training strengthens the auditory feedback loop and top down cognitive processing. The central auditory system learns to suppress irrelevant acoustic distractions, allowing the speaker to maintain their speech rate, intonation, and focus without cognitive fatigue.
+| Overview | It alters how the brain and vocal system function in loud environments. It trains the speaker to overcome the natural reflex to yell, shifting the physical effort from the throat to the respiratory system. |
+| --- | --- 
+| Vocal Mechanism and Control | Background noise activates the Lombard effect, an automatic reflex where speakers raise their pitch and volume to compete with ambient sound. Training with deliberate background noise teaches individuals to control this reflex. Speakers learn to increase their sound pressure level using subglottic pressure from the lungs rather than squeezing the intrinsic laryngeal muscles. This protects the vocal cords from tissue trauma and prevents muscle tension dysphonia. |
+| Articulation and Speech Intelligibility | Ambient sound easily masks high frequency, low energy speech sounds, particularly unvoiced consonants like /p/, /t/, /k/, and /s/. Training sessions in noisy environments force the speaker to increase their articulatory precision. The brain learns to coordinate the tongue, lips, and jaw with greater dynamic range, resulting in hyper articulation. This ensures that consonants remain distinct and words remain intelligible even when the acoustic signal is degraded by competing noise. |
+| Acoustic Resonance and Projection | To be heard over noise without straining, the speaker must optimize vocal tract resonance. Training teaches the speaker to alter the shape of the pharynx and epilarynx to amplify specific frequencies. Specifically, it boosts energy in the 2,000 to 4,000 Hz range, often called the speaker's formant or vocal ring. This frequency band matches the human ear's highest sensitivity, allowing the voice to cut through low frequency environmental noise with minimal physical effort. |
+| Auditory Processing and Cognitive Focus | Speaking in a loud environment requires significant cognitive load as the brain tries to monitor its own output while filtering external noise. Training strengthens the auditory feedback loop and top down cognitive processing. The central auditory system learns to suppress irrelevant acoustic distractions, allowing the speaker to maintain their speech rate, intonation, and focus without cognitive fatigue. |
 
 The main **?** button explains all three noise types. Continuous generation requires a browser with AudioWorklet support, which lets the browser run the audio generator separately from page controls. Hiding or leaving the page stops the noise; press Start again after returning.
 
