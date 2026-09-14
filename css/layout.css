@@ -5,6 +5,62 @@ main,
   margin-inline: auto;
 }
 
+.practice-tool {
+  padding: var(--space-5);
+  margin-block: var(--space-5) 0;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-large);
+  background: var(--color-surface);
+}
+.tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem 1.5rem; margin-block: 1rem; align-items: center; }
+.tool-grid label { display: grid; gap: 0.5rem; min-width: 0; font-size: 1rem; }
+.tool-grid input, .tool-grid select { width: 100%; min-width: 0; min-height: 2.75rem; }
+.tool-grid .tool-check { display: flex; align-items: center; gap: 0.7rem; min-height: 2.75rem; }
+.tool-check input { width: 1.25rem; min-height: 1.25rem; height: 1.25rem; flex-shrink: 0; accent-color: var(--color-accent-strong); }
+.tool-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-block: 1.5rem 0.75rem; }
+.tool-actions button { min-width: 7rem; }
+.tool-summary { color: var(--color-accent-strong); font-weight: 650; }
+.tool-note { font-size: 0.875rem; color: var(--color-muted); }
+.tool-notice { padding: 1rem; border-inline-start: 3px solid var(--color-line); color: var(--color-muted); }
+.tempo-cue { border: 1px solid var(--color-line); border-radius: var(--radius-small); min-height: 6rem; display: grid; place-content: center; text-align: center; }
+.tempo-cue span { font-size: 1.75rem; font-variant-numeric: tabular-nums; font-weight: 650; }
+.tempo-cue small { color: var(--color-muted); font-size: 0.875rem; }
+.noise-tabs { display: flex; gap: 0.5rem; margin-block: 1rem; }
+.noise-tabs button { flex: 1; padding-inline: 0.5rem; background: transparent; color: var(--color-ink); border-color: var(--color-control-border); }
+.noise-tabs [aria-selected="true"] { background: var(--color-ink); color: var(--color-surface); }
+[data-practice-panel] { position: relative; }
+[data-practice-glow]::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  pointer-events: none;
+  box-shadow: 0 0 0 2px rgb(236 133 107 / 75%), 0 0 18px 5px rgb(236 133 107 / 40%);
+  opacity: 0.45;
+  --glow-rest: 0.45;
+  --glow-peak: 0.68;
+}
+[data-practice-glow="soft"]::after { --glow-peak: 0.58; }
+[data-practice-glow="strong"]::after { --glow-peak: 0.78; }
+/* A narrow salmon edge and halo keep the cue outside panel content.
+   The steady base avoids a full on/off flash. Reduced motion removes it. */
+[data-practice-pulse="0"]::after { animation: practice-glow-a 180ms ease-in-out; }
+[data-practice-pulse="1"]::after { animation: practice-glow-b 180ms ease-in-out; }
+@keyframes practice-glow-a { 0%, 100% { opacity: var(--glow-rest); } 35% { opacity: var(--glow-peak); } }
+@keyframes practice-glow-b { 0%, 100% { opacity: var(--glow-rest); } 35% { opacity: var(--glow-peak); } }
+[data-tone-hold], [data-tone-shortcut] { -webkit-touch-callout: none; }
+.practice-tool [hidden] { display: none; }
+@media (max-width: 40rem) {
+  .tool-grid { grid-template-columns: minmax(0, 1fr); }
+  .practice-tool { padding: var(--space-4); }
+}
+@media (min-width: 40.001rem) {
+  .tool-grid .tool-check--paired { align-self: end; }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-practice-glow]::after { display: none; animation: none; }
+}
+
 .site-header {
   display: flex;
   align-items: center;
@@ -600,10 +656,12 @@ main,
   -webkit-user-select: none;
 }
 
-.tone-shortcut[data-tone-active="true"] {
-  color: var(--color-positive);
-  border-color: currentColor;
-  background: color-mix(in srgb, var(--color-positive) 12%, var(--color-surface));
+button.tone-shortcut[data-tone-active="true"],
+button.tone-shortcut[data-tone-active="true"]:hover {
+  color: var(--color-surface);
+  border-color: var(--color-positive);
+  background: var(--color-positive);
+  box-shadow: 0 0 0 0.2rem color-mix(in srgb, var(--color-positive) 20%, transparent);
 }
 
 .match-card .practice-target {

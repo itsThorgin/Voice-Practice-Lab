@@ -1,12 +1,13 @@
 import { createFrequencyHelpController } from "./target-controls.js";
 
-const cardSelector = ".tuner-card, .target-card, .match-card, .target-wave-card, .pitch-history-card, .waveform-card, .spectrum-card, .recording-card, .settings-card";
+const cardSelector = ".tuner-card, .target-card, .match-card, .target-wave-card, .pitch-history-card, .waveform-card, .spectrum-card, .recording-card, .settings-card, .metronome-card, .noise-card";
 
 // Move existing nodes so presentation controllers keep their elements and listeners.
 export function createCollapsibleCards({ root, onCollapse = () => {}, windowTarget = window }) {
   const document = root.ownerDocument;
   const disposers = [];
   for (const card of root.querySelectorAll(cardSelector)) {
+    card.dataset.practicePanel = "";
     const title = card.querySelector("h2");
     const eyebrow = card.querySelector(".eyebrow");
     const oldParents = [title.parentElement, eyebrow.parentElement];

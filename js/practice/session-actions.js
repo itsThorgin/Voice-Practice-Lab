@@ -3,7 +3,7 @@ import { createVocalRange } from "../music/vocal-range.js";
 
 // Current transient cleanup lives in clearSession. Future exercise phases
 // must extend that callback when they introduce additional in-memory resources.
-export function createSessionActions({ preferences, stopAudio, clearSession, setTarget, setVocalRange = () => {} }) {
+export function createSessionActions({ preferences, stopAudio, clearSession, setTarget, setVocalRange = () => {}, resetToolSettings = () => {} }) {
   let busy = false;
   const reset = async (deletePreferences) => {
     if (busy) return { status: "busy" };
@@ -20,6 +20,7 @@ export function createSessionActions({ preferences, stopAudio, clearSession, set
       attempt(stopAudio);
       attempt(clearSession);
       if (deletePreferences) {
+        attempt(resetToolSettings);
         attempt(() => setTarget(createTargetState()));
         attempt(() => setVocalRange(createVocalRange()));
         try { storage = preferences.clear(); }

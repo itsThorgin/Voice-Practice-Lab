@@ -5,7 +5,7 @@ Voice Practice Lab runs in your browser. It has no app server, account system or
 ## How the app limits access
 
 - Microphone capture starts only after you select Start microphone and the browser allows access. Stop microphone ends capture. If permission arrives after you have selected Stop, the app stops that unused microphone stream.
-- Reference tones and recording playback start from the app's controls. Live microphone input is never connected to the speakers.
+- Reference tones, metronome sounds, background noise and recording playback start from the app's controls. Live microphone input is never connected to the speakers.
 - Scripts and styles load from this website. Fonts come from your device. The app does not load third-party app code, advertising or tracking tools.
 - The page gives the browser rules that restrict scripts and other resources and block app data connections and form submissions.
 - The app checks settings and numeric inputs before using them. It limits recording duration and size and keeps recordings in temporary page memory.

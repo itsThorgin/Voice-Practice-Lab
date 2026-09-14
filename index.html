@@ -743,6 +743,92 @@
         <p class="recording-help" data-help-content>Keep a take as reference A, then record B as often as needed. Up to two takes, each at most 60 seconds and 16 MiB. Stopping the microphone keeps both takes; resetting the session or leaving this page deletes them. Use headphones when listening with the microphone on.</p>
       </section>
 
+      <section class="metronome-card practice-tool" data-metronome aria-labelledby="metronome-title">
+        <p class="eyebrow">Find your pace</p>
+        <h2 id="metronome-title">Metronome</h2>
+        <p data-help-content>Music mode gives you an exact beat. BPM means beats per minute. A group such as 3 + 2 puts a strong beat at the start of each group. Turn off Strong beats for equal beats. Subdivisions add quieter pulses between beats. For 6/8 and other compound patterns, BPM counts each small beat.</p>
+        <p data-help-content>In Speech pacing, one pulse represents one word at your target average pace. At 155 WPM, you hear or see 155 pulses per minute. Use this as a rhythm guide. Keep your natural pauses and expression; you do not need to land every word on a pulse. Choose a delivery style and Relaxed, Typical, or Brisk. Presets are starting points, not measured WPM or required delivery speeds.</p>
+        <p data-help-content>Sound and visual cues work independently. A salmon edge and outer glow rise and fade with every main beat. Pulse other practice panels applies it to all collapsible panels, including Settings. Intensity adjusts how much the glow rises on each beat. Reduced motion keeps the beat label without the glow and follows your device preference. These controls stay in this session only. Leaving the page stops playback; return and press Start to play again.</p>
+        <div class="tool-grid">
+          <label>Mode<select data-metro-mode><option value="music">Music</option><option value="speech">Speech pacing</option></select></label>
+          <div class="tempo-cue" data-metro-cue aria-hidden="true"><span data-metro-beat>Ready</span><small>Follow the pace</small></div>
+        </div>
+        <div data-metro-music>
+          <div class="tool-grid">
+            <label>Tempo (BPM)<input data-metro-bpm type="number" min="20" max="300" step="0.1" value="100" inputmode="decimal"></label>
+            <label>Adjust tempo<input data-metro-bpm-range type="range" min="20" max="300" step="0.1" value="100"></label>
+            <label>Beat pattern<select data-metro-pattern>
+              <option value="1">1 beat</option><option value="2">2/4</option><option value="3">3/4</option><option value="4" selected>4/4</option>
+              <option value="3+2">5/4 (3 + 2)</option><option value="2+3">5/4 (2 + 3)</option><option value="3+3">6/8 (3 + 3)</option>
+              <option value="2+2+3">7/8 (2 + 2 + 3)</option><option value="3+2+2">7/8 (3 + 2 + 2)</option>
+              <option value="3+3+3">9/8</option><option value="3+3+3+3">12/8</option><option value="custom">Custom groups</option>
+            </select></label>
+            <label>Subdivisions<select data-metro-subdivision><option value="1">None</option><option value="2">Two per beat</option><option value="3">Triplets</option><option value="4">Four per beat</option></select></label>
+            <label data-metro-custom hidden>Custom groups (up to 16 beats)<input data-metro-groups type="text" value="3+2+2" maxlength="47" aria-describedby="metro-summary"></label>
+            <label class="tool-check"><input data-metro-accent type="checkbox" checked>Strong beats</label>
+          </div>
+        </div>
+        <div data-metro-speech hidden class="tool-grid">
+          <label>Delivery style<select data-metro-preset>
+            <option value="audiobook">Audiobook</option><option value="radio">Radio / Podcast</option><option value="ad">TV / Radio ad</option>
+            <option value="fast">Fast disclaimer / Retail ad</option><option value="documentary">Documentary / Corporate</option>
+          </select></label>
+          <label>Pace<select data-metro-pace><option value="relaxed">Relaxed</option><option value="typical" selected>Typical</option><option value="brisk">Brisk</option></select></label>
+        </div>
+        <p class="tool-summary" data-metro-summary id="metro-summary"></p>
+        <div class="tool-grid">
+          <label>Sound<select data-metro-voice><option value="beep">Soft beep</option><option value="click">Click</option><option value="woodblock">Woodblock</option><option value="rimshot">Rimshot</option><option value="hihat">Hi-hat</option></select></label>
+          <label class="tool-check tool-check--paired"><input data-metro-sound type="checkbox" checked>Sound on</label>
+          <label>Volume (%)<input data-metro-volume type="text" inputmode="decimal" value="10.00" maxlength="6" aria-describedby="metro-volume-help"></label>
+          <label>Adjust volume<input data-metro-volume-range type="range" min="0" max="100" step="0.01" value="10"></label>
+        </div>
+        <p class="tool-note" id="metro-volume-help">0 is silent. Enter 0.01–100% for exact volume. Device volume also affects what you hear.</p>
+        <div class="tool-grid">
+          <label class="tool-check"><input data-metro-visual type="checkbox" checked>Visual cues</label>
+          <label class="tool-check"><input data-metro-extend type="checkbox">Pulse other practice panels</label>
+          <label>Border intensity<select data-metro-intensity><option value="soft">Soft</option><option value="medium" selected>Medium</option><option value="strong">Strong</option></select></label>
+          <label class="tool-check tool-check--paired"><input data-metro-reduced type="checkbox">Reduced motion</label>
+        </div>
+        <div class="tool-actions"><button type="button" data-metro-start>Start metronome</button><button type="button" class="button-secondary" data-metro-stop disabled>Stop</button></div>
+        <p data-metro-status role="status" tabindex="-1">Stopped.</p>
+        <p class="tool-note">Your microphone may pick up the beats. Use headphones or silent visual cues if this affects your readings or recordings.</p>
+      </section>
+
+      <section class="noise-card practice-tool" data-noise aria-labelledby="noise-title">
+        <p class="eyebrow">Set the background</p>
+        <h2 id="noise-title">Noise generator</h2>
+        <p data-help-content>Choose a noise and press Start. One noise plays at a time. Switching tabs while playing changes the sound. Each noise remembers its volume for this session. Noise can play during exercises and recording. It stops when you leave the page; press Start to play again.</p>
+        <p data-help-content>Noise is generated continuously on your device using fresh random samples. There is no repeating recording or loop join. The metronome sounds are also generated locally.</p>
+        <p data-help-content><strong>White noise:</strong> roughly equal energy in equal-width frequency bands. It sounds bright and can make other background sounds less noticeable. Start at the default 0.50% and raise it only as needed.</p>
+        <p data-help-content><strong>Pink noise:</strong> roughly equal energy in each octave, with less high-frequency energy than white noise. Try it when white noise sounds too sharp. It starts at 0.50%.</p>
+        <p data-help-content><strong>Brown noise:</strong> more low-frequency energy and a deeper sound than pink noise. Try it when you prefer a darker background. It starts at 2.00%. Small phone speakers may reproduce little of the low rumble.</p>
+        <p data-help-content>These sounds provide a background for practice. They do not remove noise from your recording. Your microphone may pick them up; use headphones or lower the volume if this affects your readings or recordings.</p>
+        <div class="noise-tabs" role="tablist" aria-label="Noise type">
+          <button type="button" id="noise-white-tab" role="tab" data-noise-tab="white" aria-controls="noise-white-panel" aria-selected="true">White</button>
+          <button type="button" id="noise-pink-tab" role="tab" data-noise-tab="pink" aria-controls="noise-pink-panel" aria-selected="false" tabindex="-1">Pink</button>
+          <button type="button" id="noise-brown-tab" role="tab" data-noise-tab="brown" aria-controls="noise-brown-panel" aria-selected="false" tabindex="-1">Brown</button>
+        </div>
+        <div id="noise-white-panel" data-noise-white-panel role="tabpanel" aria-labelledby="noise-white-tab" tabindex="0">
+          <p>Bright, steady hiss.</p>
+        </div>
+        <div id="noise-pink-panel" data-noise-pink-panel role="tabpanel" aria-labelledby="noise-pink-tab" tabindex="0" hidden>
+          <p>Soft, balanced hiss.</p>
+        </div>
+        <div id="noise-brown-panel" data-noise-brown-panel role="tabpanel" aria-labelledby="noise-brown-tab" tabindex="0" hidden>
+          <p>Deep, low rumble.</p>
+        </div>
+        <p class="tool-summary" data-noise-active-label>White noise</p>
+        <div class="tool-grid">
+          <label>Volume (%)<input data-noise-volume type="text" inputmode="decimal" value="0.50" maxlength="6" aria-describedby="noise-volume-help"></label>
+          <label>Adjust volume<input data-noise-volume-range type="range" min="0" max="100" step="0.01" value="0.50"></label>
+          <label class="tool-check"><input data-noise-mute type="checkbox">Mute</label>
+        </div>
+        <p class="tool-note" id="noise-volume-help">0 is silent. Enter 0.01–100% for exact volume. Equal percentages may sound different across noise types.</p>
+        <div class="tool-actions"><button type="button" data-noise-start>Start noise</button><button type="button" class="button-secondary" data-noise-stop disabled>Stop</button></div>
+        <p data-noise-status role="status" tabindex="-1">Stopped.</p>
+        <p class="tool-notice">Your microphone may pick up this sound. This can affect pitch readings and recordings. Use headphones or lower the volume if needed. You can keep the noise playing during practice.</p>
+      </section>
+
       <section class="settings-card" data-settings-controls aria-labelledby="settings-title">
         <p class="eyebrow">On this device</p>
         <h2 id="settings-title">Settings and session</h2>
@@ -808,7 +894,7 @@
           <article>
             <p class="principle-grid__number" aria-hidden="true">03</p>
             <h3>Saved settings, fresh sessions</h3>
-            <p>Your settings are remembered. Recordings and practice results stay only for this session.</p>
+            <p>Target, tuning, and range settings are remembered. Recordings, pacing settings, noise settings, and practice results stay only for this session.</p>
           </article>
         </div>
       </section>

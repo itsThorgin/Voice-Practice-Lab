@@ -17,6 +17,7 @@ import { createRangeControls } from "./ui/range-controls.js";
 import { createPracticeControls } from "./ui/practice-controls.js";
 import { createTargetControls } from "./ui/target-controls.js";
 import { createToneControls } from "./ui/tone-controls.js";
+import { createPracticeTools } from "./ui/practice-tools.js";
 import { createCollapsibleCards } from "./ui/collapsible-cards.js";
 import { createAccessibleSummaries, preserveControlFocus } from "./ui/accessibility.js";
 import { createRecordingControls } from "./ui/recording-controls.js";
@@ -69,6 +70,8 @@ if (app) {
   let sineOverlay = null;
   const practiceTargetState = () => matchControls?.getTargetState() ?? appState.getState().target;
   const support = detectMicrophoneSupport();
+  const practiceTools = createPracticeTools({ root: app,
+    AudioContextClass: support.AudioContextClass, canStart: () => !sessionActions?.isBusy() });
   const detector = createPitchDetector();
   const smoother = createPitchSmoother();
   const tunerHold = createTunerHold();
@@ -609,6 +612,7 @@ if (app) {
   sessionActions = createSessionActions({
     preferences,
     stopAudio: () => runCleanup([
+      () => practiceTools.stop(),
       () => microphone.stop(),
       () => toneControls.cancel({ immediate: true }),
     ]),
@@ -625,6 +629,7 @@ if (app) {
     ]),
     setTarget: (target) => appState.setTarget(target),
     setVocalRange: (range) => appState.setVocalRange(range),
+    resetToolSettings: () => practiceTools.resetSettings(),
   });
   const settingsControls = createSettingsControls({
     actions: sessionActions,

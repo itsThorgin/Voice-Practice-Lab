@@ -18,6 +18,8 @@ You can keep two recordings, A and B, for local comparison. Each can be up to 60
 
 The app saves your target choices, tuning reference and exercise note range in this browser on this device. These are settings you choose, not measurements of your voice. Each page session starts with No target, even when a target choice was saved.
 
+Metronome, speech pacing and noise settings stay in the current page session only. Speech presets do not analyse your words or measure your speaking rate. Metronome and noise playback stop when you hide or leave the page and require Start again after returning.
+
 - **Clear saved app settings** removes saved settings. It keeps your current session. Changing a setting later saves it again.
 - **Reset current session** stops audio and microphone capture and clears recordings, pitch history and practice results. It keeps your current target and settings.
 - **Delete all app data** stops audio and capture, clears the session and saved settings, and restores defaults after you confirm.

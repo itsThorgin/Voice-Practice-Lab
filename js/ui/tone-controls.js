@@ -16,6 +16,7 @@ export function createToneControls({
   const status = root.querySelector("[data-tone-status]");
   const headphones = root.querySelector("[data-tone-headphones]");
   const listeners = [];
+  const nativeTouch = typeof windowTarget.TouchEvent === "function";
   let held = null;
   let frequencyHz = null;
   let microphoneActive = false;
@@ -25,7 +26,7 @@ export function createToneControls({
   const paint = () => {
     for (const button of buttons) {
       button.disabled = destroyed || toneState === "unsupported" || frequencyHz === null;
-      button.dataset.toneActive = String(held?.button === button && ["starting", "playing"].includes(toneState));
+      button.dataset.toneActive = String(Boolean(held) && ["starting", "playing"].includes(toneState));
     }
     root.dataset.state = toneState;
     headphones.hidden = !(toneState === "playing" && microphoneActive);
@@ -89,16 +90,21 @@ export function createToneControls({
     });
     // Native click activation must never turn a momentary control into a toggle.
     listen(button, "click", (event) => event.preventDefault());
-    listen(button, "contextmenu", (event) => { event.preventDefault(); cancel(); });
+    listen(button, "contextmenu", (event) => {
+      event.preventDefault();
+      if (held?.type !== "touch" && held?.pointerType !== "touch") cancel();
+    });
     listen(button, "dragstart", (event) => { event.preventDefault(); cancel(); });
   
     if (typeof windowTarget.PointerEvent === "function") {
       listen(button, "pointerdown", (event) => {
+        // Android's compatibility pointer events must not own physical touches.
+        if (nativeTouch && event.pointerType === "touch") return;
         if (event.button !== 0 || event.isPrimary === false) return;
         event.preventDefault();
         if (held) return;
         button.focus({ preventScroll: true });
-        if (begin({ button, type: "pointer", id: event.pointerId })) {
+        if (begin({ button, type: "pointer", pointerType: event.pointerType, id: event.pointerId })) {
           try { button.setPointerCapture(event.pointerId); } catch { /* Window release remains a fallback. */ }
         }
       });
@@ -116,9 +122,13 @@ export function createToneControls({
         begin({ button, type: "mouse" });
       });
       listen(button, "mouseleave", () => { if (held?.type === "mouse" && held.button === button) cancel(); });
+    }
+    if (nativeTouch || typeof windowTarget.PointerEvent !== "function") {
       listen(button, "touchstart", (event) => {
         event.preventDefault();
+        if (held) return;
         const touch = event.changedTouches[0];
+        button.focus({ preventScroll: true });
         if (touch) begin({ button, type: "touch", id: touch.identifier });
       }, { passive: false });
     }
@@ -132,12 +142,14 @@ export function createToneControls({
   if (typeof windowTarget.PointerEvent === "function") {
     listen(windowTarget, "pointerup", releasePointer, true);
     listen(windowTarget, "pointercancel", releasePointer, true);
-    listen(windowTarget, "pointermove", (event) => { if (event.buttons === 0) releasePointer(event); }, true);
+    listen(windowTarget, "pointermove", (event) => {
+      if (held?.pointerType === "mouse" && event.buttons === 0) releasePointer(event);
+    }, true);
   } else {
     listen(windowTarget, "mouseup", () => { if (held?.type === "mouse") cancel(); }, true);
-    listen(windowTarget, "touchend", releaseTouch, true);
-    listen(windowTarget, "touchcancel", releaseTouch, true);
   }
+  listen(windowTarget, "touchend", releaseTouch, true);
+  listen(windowTarget, "touchcancel", releaseTouch, true);
   listen(windowTarget, "blur", () => cancel());
   listen(windowTarget, "keydown", (event) => { if (event.key === "Escape") cancel(); }, true);
   listen(documentTarget, "visibilitychange", () => { if (documentTarget.hidden) cancel(); });
